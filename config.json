@@ -1,0 +1,8 @@
+{
+	"dbip":"127.0.0.1",
+	"dbport":27017,
+	"loginserver_ip":"127.0.0.1",
+	"loginserver_port":9016,
+	"loginserver_id":1,
+	"loginserver_limit":5000
+}
