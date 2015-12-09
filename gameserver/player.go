@@ -71,3 +71,11 @@ func (self *Player) Run() {
 	go self.SendMsg()
 	self.RecvMsg()
 }
+
+//! 生成一个新的Player类
+func NewPlayer(ws *websocket.Conn) *Player {
+	player := new(Player)
+	player.ws = ws
+	player.sendMsgChannel = make(chan interface{}, 1024)
+	return player
+}
