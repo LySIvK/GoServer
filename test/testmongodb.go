@@ -35,7 +35,7 @@ type AccountInfo struct {
 func Test() {
 	var data AccountInfo
 	db.Init(Url, PoolLimit)
-	db.Find("AccountDB", "Account", "_id", 1, &data)
+	db.Find("Account", "AccountsInfo", "_id", 1, &data)
 	fmt.Println(data)
 }
 
