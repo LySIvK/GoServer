@@ -54,7 +54,7 @@ func GetDBSession() *mgo.Session {
 }
 
 //! 插入一条数据
-func Insert(dbName string, tableName string, data interface{}) error {
+func Insert(dbName string, tableName string, data interface{}) bool {
 	db_session := GetDBSession()
 	defer db_session.Close()
 
@@ -69,14 +69,14 @@ func Insert(dbName string, tableName string, data interface{}) error {
 			loger.Error("Insert error: %v \r\ndbName: %s \r\ntable: %s \r\ndata: %v",
 				err.Error(), dbName, tableName, data)
 		}
-		return err
+		return false
 	}
 
-	return nil
+	return true
 }
 
 //! 增加一个字段值
-func IncFieldValue(dbName string, tableName string, find string, find_value interface{}, filed string, value int) error {
+func IncFieldValue(dbName string, tableName string, find string, find_value interface{}, filed string, value int) bool {
 	db_session := GetDBSession()
 	defer db_session.Close()
 
@@ -85,10 +85,10 @@ func IncFieldValue(dbName string, tableName string, find string, find_value inte
 	if err != nil {
 		loger.Error("IncFieldValue error: %v \r\ndbName: %s \r\ntable: %s \r\nfind: %s:%v \r\n value: %s:%d \r\n",
 			err.Error(), dbName, tableName, find, find_value, filed, value)
-		return err
+		return false
 	}
 
-	return nil
+	return true
 }
 
 //! 获取集合中元素数量
@@ -100,22 +100,29 @@ func Count(dbName string, tableName string) (int, error) {
 }
 
 //! 查询一条数据
-func Find(dbName string, tableName string, find string, find_value interface{}, data interface{}) error {
+func Find(dbName string, tableName string, find string, find_value interface{}, data interface{}) bool {
 	db_session := GetDBSession()
 	defer db_session.Close()
 
 	collection := db_session.DB(dbName).C(tableName)
 	err := collection.Find(bson.M{find: find_value}).One(data)
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			loger.Warn("Not Find")
+			return false
+		}
+
 		loger.Error("Find error: %v \r\ndbName: %s \r\ntable: %s \r\nfind: %s:%v \r\n",
 			err.Error(), dbName, tableName, find, find_value)
+
+		return false
 	}
 
-	return err
+	return true
 }
 
 //! 条件查询
-func Find_Conditional(dbName string, tableName string, find string, conditional string, find_value interface{}, lst interface{}) error {
+func Find_Conditional(dbName string, tableName string, find string, conditional string, find_value interface{}, lst interface{}) bool {
 	db_session := GetDBSession()
 	defer db_session.Close()
 
@@ -136,21 +143,25 @@ func Find_Conditional(dbName string, tableName string, find string, conditional 
 		err := errors.New("conditional wrong")
 		loger.Error("Find_Conditional error: %v \r\ndbName: %s \r\ntable: %s \r\nfind: %s:%s%v \r\n",
 			err.Error(), dbName, tableName, find, conditional, find_value)
-		return err
+		return false
 	}
 
 	collection := db_session.DB(dbName).C(tableName)
 	err := collection.Find(bson.M{find: bson.M{con: find_value}}).All(lst)
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			loger.Warn("Not Find")
+			return false
+		}
 		loger.Error("Find_Conditional error: %v \r\ndbName: %s \r\ntable: %s \r\nfind: %s:%s%v \r\n",
 			err.Error(), dbName, tableName, find, conditional, find_value)
 	}
 
-	return err
+	return true
 }
 
 //! 范围查询
-func Find_Range(dbName string, tableName string, find string, range_begin interface{}, range_end interface{}, isEqul bool, lst interface{}) error {
+func Find_Range(dbName string, tableName string, find string, range_begin interface{}, range_end interface{}, isEqul bool, lst interface{}) bool {
 	var greater, less string
 
 	if isEqul == true {
@@ -167,16 +178,21 @@ func Find_Range(dbName string, tableName string, find string, range_begin interf
 	collection := db_session.DB(dbName).C(tableName)
 	err := collection.Find(bson.M{find: bson.M{greater: range_begin, less: range_end}}).All(lst)
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			loger.Warn("Not Find")
+			return false
+		}
 		loger.Error("Find_Range error: %v \r\ndbName: %s \r\ntable: %s \r\nfind: %s:%v --- %v \r\n",
 			err.Error(), dbName, tableName, find, range_begin, range_end)
+		return false
 	}
 
-	return err
+	return true
 }
 
 //! 排序查找
 //! order 1 -> 正序  -1 -> 倒序
-func Find_Sort(dbName string, tableName string, find string, order int, number int, lst interface{}) error {
+func Find_Sort(dbName string, tableName string, find string, order int, number int, lst interface{}) bool {
 	db_session := GetDBSession()
 	defer db_session.Close()
 
@@ -192,71 +208,100 @@ func Find_Sort(dbName string, tableName string, find string, order int, number i
 
 	err := query.All(lst)
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			loger.Warn("Not Find")
+			return false
+		}
+
 		loger.Error("Find_Sort error: %v \r\ndbName: %s \r\ntable: %s \r\nfind: %s \r\norder: %d\r\nlimit: %d\r\n",
 			err.Error(), dbName, tableName, find, order, number)
+		return false
 	}
 
-	return err
+	return true
 }
 
 //! 查询所有数据
-func FindAll(dbName string, tableName string, lst interface{}) error {
+func FindAll(dbName string, tableName string, lst interface{}) bool {
 	db_session := GetDBSession()
 	defer db_session.Close()
 
 	collection := db_session.DB(dbName).C(tableName)
 	err := collection.Find(nil).Iter().All(lst)
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			loger.Warn("Not Find")
+			return false
+		}
+
 		loger.Error("FindAll error: %v \r\ndbName: %s \r\ntable: %s \r\n",
 			err.Error(), dbName, tableName)
+		return false
 	}
 
-	return err
+	return true
 }
 
 //! 更新字段值
-func UpdateField(dbName string, tableName string, find string, find_value interface{}, update string, update_value interface{}) error {
+func UpdateField(dbName string, tableName string, find string, find_value interface{}, update string, update_value interface{}) bool {
 	db_session := GetDBSession()
 	defer db_session.Close()
 
 	collection := db_session.DB(dbName).C(tableName)
 	err := collection.Update(bson.M{find: find_value}, bson.M{"$set": bson.M{update: update_value}})
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			loger.Warn("Not Find")
+			return false
+		}
 		loger.Error("UpdateField error: %v \r\ndbName: %s \r\ntable: %s \r\nfind: %s:%v \r\nupdate: %s:%v\r\n",
 			err.Error(), dbName, tableName, find, find_value, update, update_value)
+		return false
 	}
 
-	return err
+	return true
 }
 
 //! 更新整个字段
-func Update(dbName string, tableName string, find string, find_value interface{}, data interface{}) error {
+func Update(dbName string, tableName string, find string, find_value interface{}, data interface{}) bool {
 	db_session := GetDBSession()
 	defer db_session.Close()
 
 	collection := db_session.DB(dbName).C(tableName)
 	err := collection.Update(bson.M{find: find_value}, data)
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			loger.Warn("Not Find")
+			return false
+		}
+
 		loger.Error("Update error: %v \r\ndbName: %s \r\ntable: %s \r\nfind: %s:%v \r\nupdate: %v\r\n",
 			err.Error(), dbName, tableName, find, find_value, data)
+		return false
 	}
 
-	return err
+	return true
 }
 
 //! 删除一条记录
-func Remove(dbName string, tableName string, find string, find_value interface{}) error {
+func Remove(dbName string, tableName string, find string, find_value interface{}) bool {
 	db_session := GetDBSession()
 	defer db_session.Close()
 
 	collection := db_session.DB(dbName).C(tableName)
 	err := collection.Remove(bson.M{find: find_value})
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			loger.Warn("Not Find")
+			return false
+		}
+
 		loger.Error("Remove error: %v \r\ndbName: %s \r\ntable: %s \r\nfind: %s:%v \r\n",
 			err.Error(), dbName, tableName, find, find_value)
+		return false
 	}
 
-	return err
+	return true
 }
 
 //! 删除所有记录
@@ -275,11 +320,25 @@ func RemoveAll(dbName string, tableName string, find string, find_value interfac
 }
 
 //! 增加数组字段
-func AddToArray(dbname string, tableName string, find string, find_value interface{}, fieldname string, data interface{}) error {
-	return Update(dbname, tableName, find, find_value, bson.M{"$push": bson.M{fieldname: data}})
+func AddToArray(dbName string, tableName string, find string, find_value interface{}, fieldname string, data interface{}) bool {
+	return Update(dbName, tableName, find, find_value, bson.M{"$push": bson.M{fieldname: data}})
 }
 
 //删掉数组字段
-func RemoveFromArray(dbname string, tableName string, find string, find_value interface{}, fieldname string, data interface{}) error {
-	return Update(dbname, tableName, find, find_value, bson.M{"$pull": bson.M{fieldname: data}})
+func RemoveFromArray(dbName string, tableName string, find string, find_value interface{}, fieldname string, data interface{}) bool {
+	return Update(dbName, tableName, find, find_value, bson.M{"$pull": bson.M{fieldname: data}})
+}
+
+func IsRecordExist(dbName string, tableName string, find string, find_value interface{}) bool {
+	db_session := GetDBSession()
+	defer db_session.Close()
+	coll := db_session.DB(dbName).C(tableName)
+	nCount, err := coll.Find(bson.M{find: find_value}).Count()
+	if err == mgo.ErrNotFound {
+		return false
+	} else if err != nil {
+		loger.Error("IsRecordExist error: %s", err.Error())
+	}
+
+	return nCount > 0
 }
