@@ -4,6 +4,7 @@ import (
 	"db"
 	"loger"
 	g "loginserver/gameservermgr"
+	"loginserver/table"
 	"sync"
 	"time"
 	"tool"
@@ -42,7 +43,7 @@ func (self *AccountMgr) Init(gameServerMgr *g.GameServerMgr) {
 
 	//! 获取当前账户ID
 	lastAccount := []AccountInfo{}
-	db.Find_Sort("accountdb", "account", "_id", -1, 1, &lastAccount)
+	db.Find_Sort(table.AccountDB, table.AccountInfoTable, "_id", -1, 1, &lastAccount)
 	if len(lastAccount) <= 0 {
 		self.curAccountID = 1
 	} else {
@@ -53,7 +54,7 @@ func (self *AccountMgr) Init(gameServerMgr *g.GameServerMgr) {
 	prefetching := []AccountInfo{}
 	now := time.Now().Unix()
 	beginTime := now - (60 * 60 * 24 * 7)
-	db.Find_Range("accountdb", "account", "lastlogintime", beginTime, now, true, &prefetching)
+	db.Find_Range(table.AccountDB, table.AccountInfoTable, "lastlogintime", beginTime, now, true, &prefetching)
 
 	if len(prefetching) <= 0 {
 		loger.Debug("Prefetching done, but it's zero. time: %v --- %v", beginTime, now)
@@ -99,7 +100,7 @@ func (self *AccountMgr) IsNameExist(name string) bool {
 	if playerID == 0 {
 		//! 内存中没有,去数据库中查找
 		info := AccountInfo{}
-		err := db.Find("accountdb", "account", "name", name, &info)
+		err := db.Find(table.AccountDB, table.AccountInfoTable, "name", name, &info)
 		if err != nil {
 			return false
 		}
@@ -118,7 +119,7 @@ func (self *AccountMgr) IsNameExist(name string) bool {
 func (self *AccountMgr) CreateNewAccountID() int64 {
 	//! 多开登陆服时,每次读取数据库取出最新AccountID
 	lastAccount := []AccountInfo{}
-	db.Find_Sort("accountdb", "account", "_id", -1, 1, &lastAccount)
+	db.Find_Sort(table.AccountDB, table.AccountInfoTable, "_id", -1, 1, &lastAccount)
 	if len(lastAccount) <= 0 {
 		self.curAccountID = 1
 	} else {

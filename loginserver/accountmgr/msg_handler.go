@@ -6,6 +6,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"loger"
 	"loginserver/msg"
+	"loginserver/table"
 	"net/http"
 	"time"
 	"tool"
@@ -58,9 +59,11 @@ func (self *AccountMgr) Handler_UserLogin(w http.ResponseWriter, r *http.Request
 	if info.LastServerID == 0 {
 		//! 若无上次登陆服,则获取推荐服
 		recommendServer := self.gameServerMgr.GetRecommendServerID()
-		response.LastLoginServerID = recommendServer.ID
-		response.LastLoginServerName = recommendServer.Name
-		response.LastLoginServerAddr = recommendServer.Addr
+		if recommendServer != nil {
+			response.LastLoginServerID = recommendServer.ID
+			response.LastLoginServerName = recommendServer.Name
+			response.LastLoginServerAddr = recommendServer.Addr
+		}
 	}
 
 	if info.LastServerID > 0 {
@@ -74,10 +77,10 @@ func (self *AccountMgr) Handler_UserLogin(w http.ResponseWriter, r *http.Request
 	now := time.Now().Unix()
 	if now-info.LastLoginTime <= 24*60*60 {
 		info.LoginDays += 1
-		go db.IncFieldValue("accountdb", "account", "_id", info.AccountID, "logindays", 1)
+		go db.IncFieldValue(table.AccountDB, table.AccountInfoTable, "_id", info.AccountID, "logindays", 1)
 	} else {
 		info.LoginDays = 1
-		go db.UpdateField("accountdb", "account", "_id", info.AccountID, "logindays", 1)
+		go db.UpdateField(table.AccountDB, table.AccountInfoTable, "_id", info.AccountID, "logindays", 1)
 	}
 }
 
@@ -156,7 +159,7 @@ func (self *AccountMgr) Handler_UserRegister(w http.ResponseWriter, r *http.Requ
 	//! 注册帐号
 	newInfo := self.CreateNewAccountInfo(req.AccountName, req.AccountPwd, 0)
 	self.AddAccountInfo(newInfo)
-	err = db.Insert("accountdb", "account", newInfo)
+	err = db.Insert(table.AccountDB, table.AccountInfoTable, newInfo)
 	if err == nil {
 		response.StatusCode = msg.RE_SUCCESS
 	}
@@ -307,11 +310,11 @@ func (self *AccountMgr) Handler_VerifyUserLogin(w http.ResponseWriter, r *http.R
 	if isExist == false {
 		//! 如果不存在,则加入用户登陆过的服务器列表
 		accountInfo.LoginServerIDs = append(accountInfo.LoginServerIDs, req.ServerID)
-		go db.AddToArray("accountdb", "account", "_id", req.AccountID, "loginserverids", req.ServerID)
+		go db.AddToArray(table.AccountDB, table.AccountInfoTable, "_id", req.AccountID, "loginserverids", req.ServerID)
 	}
 
 	//! 设置用户最后登录服务器
-	go db.UpdateField("accountdb", "account", "_id", req.AccountID, "lastserverid", req.ServerID)
+	go db.UpdateField(table.AccountDB, table.AccountInfoTable, "_id", req.AccountID, "lastserverid", req.ServerID)
 
 	response.StatusCode = msg.RE_SUCCESS
 }

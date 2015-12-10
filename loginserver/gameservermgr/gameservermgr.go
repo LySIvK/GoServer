@@ -150,6 +150,10 @@ func (self *GameServerMgr) GetRecommendServerID() *GameServerInfo {
 		}
 	}
 
+	if serverID == 0 {
+		return nil
+	}
+
 	return self.serverMap[serverID]
 }
 

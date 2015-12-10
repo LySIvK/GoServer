@@ -11,8 +11,8 @@ type Msg_RegisterGameServer_Req struct {
 
 //! 用户登陆请求
 type Msg_UserLogin_Req struct {
-	AccountName string `json:"account"`  //! 玩家帐号
-	AccountPwd  string `json:"password"` //! 玩家密码
+	AccountName string `json:table.AccountInfoTable` //! 玩家帐号
+	AccountPwd  string `json:"password"`             //! 玩家密码
 }
 
 //! 用户登陆请求返回
@@ -27,8 +27,8 @@ type Msg_UserLogin_Res struct {
 
 //! 用户注册请求
 type Msg_UserRegister_Req struct {
-	AccountName string `json:"account"`  //! 注册帐号
-	AccountPwd  string `json:"password"` //! 注册密码
+	AccountName string `json:table.AccountInfoTable` //! 注册帐号
+	AccountPwd  string `json:"password"`             //! 注册密码
 }
 
 //! 用户注册请求返回
