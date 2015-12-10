@@ -115,7 +115,6 @@ func Find(dbName string, tableName string, find string, find_value interface{}, 
 }
 
 //! 条件查询
-//! mongodb.Find_Conditional("TestDB", "TestTable", "money", ">=", 999999999, &player)
 func Find_Conditional(dbName string, tableName string, find string, conditional string, find_value interface{}, lst interface{}) error {
 	db_session := GetDBSession()
 	defer db_session.Close()
@@ -151,7 +150,6 @@ func Find_Conditional(dbName string, tableName string, find string, conditional 
 }
 
 //! 范围查询
-//! mongodb.Find_Range("TestDB", "TestTable", "level", 10, 100, true, &player)
 func Find_Range(dbName string, tableName string, find string, range_begin interface{}, range_end interface{}, isEqul bool, lst interface{}) error {
 	var greater, less string
 
@@ -178,7 +176,6 @@ func Find_Range(dbName string, tableName string, find string, range_begin interf
 
 //! 排序查找
 //! order 1 -> 正序  -1 -> 倒序
-//! Mongodb语句: db.getCollection('TestTable').find().sort({'money' : -1}).limit(1)
 func Find_Sort(dbName string, tableName string, find string, order int, number int, lst interface{}) error {
 	db_session := GetDBSession()
 	defer db_session.Close()
