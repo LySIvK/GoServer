@@ -12,7 +12,7 @@ func main() {
 	loger.InitLoger("./log", loger.LogDebug, true, "test")
 	loger.Debug("Test Run")
 
-	Test()
+	//Test()
 	//AccountMgr.SayHello()
 
 	//!	serverconfig.Init() //! Done
@@ -20,5 +20,5 @@ func main() {
 	//! TestLevelup() 		//! Done
 	//! TestFind()    		//! Done
 	//! TestInsert()  		//! Done
-	//! TestSendMsg()		//! Done
+	TestSendMsg() //! Done
 }
