@@ -2,6 +2,7 @@ package PlayerMgr
 
 import (
 	"db"
+	"gameserver/table"
 	"loger"
 )
 
@@ -28,11 +29,16 @@ func (self *PlayerMgr) Init(limit int) {
 	G_Dispatch.Init()
 }
 
+//! 获取当期在线玩家数量
+func (self *PlayerMgr) GetOnlinePlayerCount() int {
+	return self.playerCount
+}
+
 //! 生成新玩家ID
 func (self *PlayerMgr) CreateNewPlayerID() int64 {
 	playerLst := []PlayerInfo{}
 	var playerID int64
-	db.Find_Sort("playerdb", "player", "_id", -1, 1, &playerLst)
+	db.Find_Sort(table.GameDB, table.PlayerInfoTable, "_id", -1, 1, &playerLst)
 	if len(playerLst) <= 0 {
 		playerID = 1
 	} else {

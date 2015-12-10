@@ -13,11 +13,15 @@ type LoginMgr struct {
 	infoLst []LoginInfo
 }
 
+func (self *LoginMgr) registerMsg() {
+	//! 玩家登录游戏服务器
+	PlayerMgr.G_Dispatch.AddMsgRegistryToMap(new(PlayerLogin))
+
+}
+
 func (self *LoginMgr) Init() {
 	//! 注册消息
-
-	PlayerMgr.G_Dispatch.AddMsgRegistryToMap(new(PlayerLogin)) //! 玩家登录游戏服务器
-
+	self.registerMsg()
 }
 
 func NewLoginMgr() *LoginMgr {
