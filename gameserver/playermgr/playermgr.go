@@ -7,19 +7,25 @@ import (
 
 type PlayerMap map[int64]*Player
 type PlayerInfoMap map[int64]*PlayerInfo
+type PlayerNameMap map[string]int64
 
 //! 玩家管理器
 type PlayerMgr struct {
 	playerMap     PlayerMap     //! 玩家连接表
 	playerInfoMap PlayerInfoMap //! 玩家信息表
+	playerNameMap PlayerNameMap //! 玩家姓名表
 	playerCount   int           //! 当前在线玩家数量
 	countLimit    int           //! 人数限制
 }
 
 //! 初始化玩家管理器
-func (self *PlayerMgr) Init() {
+func (self *PlayerMgr) Init(limit int) {
 	self.playerMap = make(PlayerMap)
 	self.playerInfoMap = make(PlayerInfoMap)
+	self.countLimit = limit
+
+	//! 初始化消息分拣器
+	G_Dispatch.Init()
 }
 
 //! 生成新玩家ID
@@ -76,13 +82,8 @@ func (self *PlayerMgr) kickPlayerFromID(playerID int64) {
 	self.SubPlayer(player)
 }
 
-//! 踢出一个在线玩家 From Name
-func (self *PlayerMgr) KickPlayerFromName(playerName string) {
-
-}
-
-func NewPlayerMgr() *PlayerMgr {
+func NewPlayerMgr(limit int) *PlayerMgr {
 	mgr := new(PlayerMgr)
-	mgr.Init()
+	mgr.Init(limit)
 	return mgr
 }

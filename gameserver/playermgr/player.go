@@ -12,6 +12,28 @@ type Player struct {
 	PlayerID       int64            //! 玩家ID
 	ws             *websocket.Conn  //! WebSocket底层套接字
 	sendMsgChannel chan interface{} //! 发送消息频道
+	seqID          int              //! 消息顺序号
+}
+
+//! 检测消息顺序号
+func (self *Player) CheckMsgSeq(msgSeq int) bool {
+	if self.seqID != msgSeq {
+		loger.Error("checkMsgSeq fail, msgSeq: %d  needSeq: %d", msgSeq, self.seqID)
+		return false
+	}
+	return true
+}
+
+//! 处理消息
+func (self *Player) ProcessMsg(msg string) {
+	//! 顺序号自加
+	self.seqID++
+
+	//! 调用消息分拣
+	isSuccess := G_Dispatch.DispatchMsg(self, msg)
+	if isSuccess == false {
+		loger.Error("Dispatch message: %s   has a error.", msg)
+	}
 }
 
 //! 读取消息协程
@@ -26,7 +48,8 @@ func (self *Player) RecvMsg() {
 		if err == nil {
 			loger.Debug("PlayerID: %v  recv msg: %s", self.PlayerID, msg)
 
-			//! TODO: 消息处理
+			//! 交于消息分拣器
+			self.ProcessMsg(msg)
 			continue
 		}
 
@@ -62,7 +85,9 @@ func (self *Player) SendMsg() {
 }
 
 //! 发送消息
-func (self *Player) Send(msg string) {
+func (self *Player) Send(msg IMsgHead) {
+	msgType, msgAction := msg.GetTypeAndAction()
+	msg.FillMsgHead(self.seqID, msgType, msgAction)
 	self.sendMsgChannel <- msg
 }
 
