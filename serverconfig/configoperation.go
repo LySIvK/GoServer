@@ -8,12 +8,18 @@ import (
 )
 
 type Config struct {
-	Database_IP      string `json:"dbip"`              //! 数据库IP
-	Database_Port    int    `json:"dbport"`            //! 数据库端口
+	Database_IP   string `json:"dbip"`   //! 数据库IP
+	Database_Port int    `json:"dbport"` //! 数据库端口
+
 	LoginServer_IP   string `json:"loginserver_ip"`    //! 登录服务器IP
 	LoginServer_Port int    `json:"loginserver_port"`  //! 登录服务器端口
 	LoginServerID    int    `json:"loginserver_id"`    //! 登录服务器ID
 	LoginServerLimit int    `json:"loginserver_limit"` //! 登陆服务器人数限制
+
+	GameServer_IP   string `json:"gameserver_ip"`    //! 游戏服务器IP
+	GameServer_Port int    `json:"gameserver_port"`  //! 游戏服务器端口
+	GameServerID    int    `json:"gameserver_id"`    //! 游戏服务器ID
+	GameServerLimit int    `json:"gameserver_limit"` //! 游戏服务器人数限制
 }
 
 //! 全局变量 服务器配置文件
