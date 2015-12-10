@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"strings"
 )
 
@@ -37,4 +38,10 @@ func MD5(code string) string {
 	h := md5.New()
 	h.Write([]byte(code))
 	return hex.EncodeToString(h.Sum(nil))
+}
+
+//! 克隆对象,只有类型,没有值,值是空
+func CloneType(obj interface{}) interface{} {
+	newObj := reflect.New(reflect.TypeOf(obj).Elem()).Elem()
+	return newObj.Addr().Interface()
 }
