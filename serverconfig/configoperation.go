@@ -20,6 +20,8 @@ type Config struct {
 	GameServer_Port int    `json:"gameserver_port"`  //! 游戏服务器端口
 	GameServerID    int    `json:"gameserver_id"`    //! 游戏服务器ID
 	GameServerLimit int    `json:"gameserver_limit"` //! 游戏服务器人数限制
+	GameServerName  string `json:"gameserver_name"`  //! 游戏服务器名字
+	GameServer_New  bool   `json:"gameserver_isnew"` //! 是否为新服
 }
 
 //! 全局变量 服务器配置文件

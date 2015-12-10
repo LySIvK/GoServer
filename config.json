@@ -5,8 +5,10 @@
 	"loginserver_port":9016,
 	"loginserver_id":1,
 	"loginserver_limit":5000,
-	"gameserver_ip":"0.0.0.0",
+	"gameserver_ip":"127.0.0.1",
 	"gameserver_port":9000,
 	"gameserver_id":1,
-	"gameserver_limit":3000
+	"gameserver_limit":3000,
+	"gameserver_name":"测试一服",
+	"gameserver_isnew":true
 }
