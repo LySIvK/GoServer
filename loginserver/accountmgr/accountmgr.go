@@ -116,6 +116,15 @@ func (self *AccountMgr) IsNameExist(name string) bool {
 
 //! 获取注册帐号ID
 func (self *AccountMgr) CreateNewAccountID() int64 {
+	//! 多开登陆服时,每次读取数据库取出最新AccountID
+	lastAccount := []AccountInfo{}
+	db.Find_Sort("accountdb", "account", "_id", -1, 1, &lastAccount)
+	if len(lastAccount) <= 0 {
+		self.curAccountID = 1
+	} else {
+		self.curAccountID = lastAccount[0].AccountID + 1
+	}
+
 	ret := self.curAccountID
 	self.curAccountID += 1
 	return ret
