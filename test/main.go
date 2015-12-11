@@ -13,7 +13,8 @@ func main() {
 	loger.Debug("Test Run")
 
 	//TestLogin()
-	TestSendMsg()
+	TestCreateRole()
+	//TestSendMsg()
 
 	//!TestLogin()   //! Done
 

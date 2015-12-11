@@ -60,3 +60,40 @@ func TestSendMsg() {
 	// fmt.Println("Success!")
 	defer ws.Close()
 }
+
+//! 创建角色信息
+type Msg_CreateRole struct {
+	MsgHead    `json:"head"`
+	AccountID  int64  `json:"accountid"`
+	LoginKey   string `json:"key"`
+	PlayerName string `json:"name"`
+}
+
+func TestCreateRole() {
+	ws, err := websocket.Dial(url, "", origin)
+	if err != nil {
+		fmt.Println("connect server fail!")
+		return
+	}
+
+	msg := Msg_CreateRole{}
+	msg.SeqID = 1
+	msg.MsgType = "login"
+	msg.Action = "create"
+	msg.CreateTime = time.Now().Unix()
+	msg.AccountID = 1
+	msg.LoginKey = "566a9092aeddbf24a412f134"
+	msg.PlayerName = "Arteezy"
+
+	err = websocket.JSON.Send(ws, &msg)
+	if err != nil {
+		fmt.Println("send msg fail")
+		return
+	}
+
+	b, _ := json.Marshal(msg)
+
+	fmt.Println("send: ", string(b))
+
+	defer ws.Close()
+}
