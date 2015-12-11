@@ -13,6 +13,7 @@ type Player struct {
 	ws             *websocket.Conn  //! WebSocket底层套接字
 	sendMsgChannel chan interface{} //! 发送消息频道
 	seqID          int              //! 消息顺序号
+	PlayerMgr      *PlayerMgr       //! 玩家管理器指针
 }
 
 //! 检测消息顺序号
@@ -72,11 +73,11 @@ func (self *Player) SendMsg() {
 
 	//! 从频道中读取消息
 	for msg := range self.sendMsgChannel {
-		err := websocket.Message.Send(self.ws, msg)
+		err := websocket.JSON.Send(self.ws, msg)
 
 		//! 解析消息并输出
 		msgText, _ := json.Marshal(msg)
-		loger.Debug("Send to id: %v  msg: ", self.PlayerID, msgText)
+		loger.Debug("Send to id: %v msg: %s", self.PlayerID, msgText)
 		if err != nil {
 			loger.Error("websocket send msg fail. error: %v", err.Error())
 			return
@@ -98,9 +99,10 @@ func (self *Player) Run() {
 }
 
 //! 生成一个新的Player类
-func NewPlayer(ws *websocket.Conn) *Player {
+func NewPlayer(ws *websocket.Conn, playerMgr *PlayerMgr) *Player {
 	player := new(Player)
 	player.ws = ws
+	player.PlayerMgr = playerMgr
 	player.sendMsgChannel = make(chan interface{}, 1024)
 	return player
 }

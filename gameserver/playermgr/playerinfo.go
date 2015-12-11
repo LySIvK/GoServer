@@ -1,7 +1,5 @@
 package PlayerMgr
 
-import ()
-
 type PlayerInfo struct {
 	PlayerID  int64   `bson:"_id"`       //! 玩家唯一标识
 	AccountID int64   `json:"accountid"` //! 玩家账号ID

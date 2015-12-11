@@ -4,13 +4,8 @@ import (
 	"gameserver/playermgr"
 )
 
-type LoginInfo struct {
-	AccountID int64
-	PlayerID  int64
-}
-
 type LoginMgr struct {
-	infoLst []LoginInfo
+	playerInfo PlayerMgr.PlayerInfo
 }
 
 func (self *LoginMgr) registerMsg() {

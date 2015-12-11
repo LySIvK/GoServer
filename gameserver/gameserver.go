@@ -85,7 +85,7 @@ func (self *GameServer) GetConnectHandler() websocket.Handler {
 	connectHandler := func(ws *websocket.Conn) {
 
 		//! 创建一个新玩家
-		player := PlayerMgr.NewPlayer(ws)
+		player := PlayerMgr.NewPlayer(ws, self.playerMgr)
 		player.PlayerID = self.playerMgr.CreateNewPlayerID()
 
 		//! 通知频道
@@ -106,10 +106,10 @@ func (self *GameServer) Listen() {
 		select {
 		case player := <-self.addPlayerChannel:
 			loger.Debug("Player connect: %d", player.PlayerID)
-			self.playerMgr.AddPlayer(player)
+			self.playerMgr.AddPlayerCount(player)
 		case player := <-self.removePlayerChannel:
 			loger.Debug("Player disconnect: %d", player.PlayerID)
-			self.playerMgr.SubPlayer(player)
+			self.playerMgr.SubPlayerCount(player)
 		}
 	}
 }

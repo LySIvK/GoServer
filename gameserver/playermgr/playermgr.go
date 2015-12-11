@@ -48,7 +48,7 @@ func (self *PlayerMgr) CreateNewPlayerID() int64 {
 }
 
 //! 添加一个玩家
-func (self *PlayerMgr) AddPlayer(player *Player) {
+func (self *PlayerMgr) AddPlayerCount(player *Player) {
 
 	//! 检测人数是否超标
 	if self.countLimit <= self.playerCount {
@@ -64,13 +64,72 @@ func (self *PlayerMgr) AddPlayer(player *Player) {
 }
 
 //! 减去一个玩家
-func (self *PlayerMgr) SubPlayer(player *Player) {
+func (self *PlayerMgr) SubPlayerCount(player *Player) {
 
 	//! 删除该玩家
 	delete(self.playerMap, player.PlayerID)
 
 	//! 玩家人数 - 1
 	self.playerCount -= 1
+}
+
+//! 添加一个玩家信息
+func (self *PlayerMgr) AddPlayerInfo(player *PlayerInfo) {
+	self.playerInfoMap[player.PlayerID] = player
+}
+
+//! 删除一个玩家信息
+func (self *PlayerMgr) SubPlayerInfo(player *PlayerInfo) {
+	delete(self.playerInfoMap, player.PlayerID)
+}
+
+//! 获取一个玩家信息
+func (self *PlayerMgr) GetPlayerInfo(playerID int64) *PlayerInfo {
+	//! 判断该玩家是否存在
+	_, ok := self.playerInfoMap[playerID]
+	if ok == false {
+		player := new(PlayerInfo)
+
+		//! 玩家不存在,尝试从数据库取出数据
+		isExist := db.Find(table.GameDB, table.PlayerInfoTable, "_id", playerID, player)
+		if isExist == false {
+			//! 玩家信息不存在
+			return nil
+		}
+
+		//! 取出玩家信息,加入内存
+		self.AddPlayerInfo(player)
+	}
+
+	return self.playerInfoMap[playerID]
+}
+
+//! 通过账号ID取得一个玩家信息
+func (self *PlayerMgr) GetPlayerInfoFromAccount(accountID int64) *PlayerInfo {
+	var ret *PlayerInfo
+
+	//! 遍历玩家表,匹配账户ID
+	for _, v := range self.playerInfoMap {
+		if v.AccountID == accountID {
+			ret = v
+			break
+		}
+	}
+
+	if ret == nil {
+		//! 玩家不存在,尝试从数据库取出数据
+		ret = new(PlayerInfo)
+		isExist := db.Find(table.GameDB, table.PlayerInfoTable, "accountid", accountID, ret)
+
+		if isExist == false {
+			//! 查无此人
+			return nil
+		}
+
+		//! 加入玩家表
+		self.AddPlayerInfo(ret)
+	}
+	return ret
 }
 
 //! 踢出一个在线玩家 From ID
@@ -85,7 +144,7 @@ func (self *PlayerMgr) kickPlayerFromID(playerID int64) {
 
 	player.ws.Close()
 
-	self.SubPlayer(player)
+	self.SubPlayerCount(player)
 }
 
 func NewPlayerMgr(limit int) *PlayerMgr {

@@ -36,6 +36,11 @@ func (self *MsgHead) GetMsgKey() string {
 	return itemKey
 }
 
+//! 默认接口
+func (self *MsgHead) ProcessAction(player *Player) bool {
+	return true
+}
+
 //! 定义消息接口
 type IMsgHead interface {
 	FillMsgHead(seqID int, msgType string, msgAction string) //! 填写消息头
