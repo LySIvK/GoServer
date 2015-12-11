@@ -159,8 +159,8 @@ func (self *AccountMgr) Handler_UserRegister(w http.ResponseWriter, r *http.Requ
 	//! 注册帐号
 	newInfo := self.CreateNewAccountInfo(req.AccountName, req.AccountPwd, 0)
 	self.AddAccountInfo(newInfo)
-	err = db.Insert(table.AccountDB, table.AccountInfoTable, newInfo)
-	if err == nil {
+	isSuccess := db.Insert(table.AccountDB, table.AccountInfoTable, newInfo)
+	if isSuccess == true {
 		response.StatusCode = msg.RE_SUCCESS
 	}
 }

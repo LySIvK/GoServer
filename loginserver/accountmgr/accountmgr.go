@@ -100,8 +100,8 @@ func (self *AccountMgr) IsNameExist(name string) bool {
 	if playerID == 0 {
 		//! 内存中没有,去数据库中查找
 		info := AccountInfo{}
-		err := db.Find(table.AccountDB, table.AccountInfoTable, "name", name, &info)
-		if err != nil {
+		isFind := db.Find(table.AccountDB, table.AccountInfoTable, "name", name, &info)
+		if isFind != false {
 			return false
 		}
 
@@ -167,6 +167,7 @@ func (self *AccountMgr) CheckLoginKey(accountID int64, key string) bool {
 		return true
 	}
 
+	loger.Debug("%v", self.loginKeyMap)
 	return false
 }
 
