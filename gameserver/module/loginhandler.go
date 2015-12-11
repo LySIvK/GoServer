@@ -231,7 +231,9 @@ func (self *Msg_CreateRole) doAction(player *Player, msg *CreateRole_Res) bool {
 
 	//! 数据库添加一条记录
 	playerMgr := player.PlayerMgr
+
 	playerMgr.AddPlayerInfoToDB(info)
+	msg.StatusCode = code.RE_SUCCESS
 	return true
 }
 

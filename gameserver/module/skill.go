@@ -20,7 +20,6 @@ type SkillMgr struct {
 func (self *SkillMgr) Init(moduleMgr *ModuleMgr) {
 	self.moduleMgr = moduleMgr
 	self.skillLst = make(SkillInfoLst)
-
 }
 
 func NewSkillMgr(moduleMgr *ModuleMgr) *SkillMgr {

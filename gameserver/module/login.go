@@ -10,6 +10,8 @@ func (self *LoginMgr) registerMsg() {
 	//! 玩家登录游戏服务器
 	G_Dispatch.AddMsgRegistryToMap(new(Msg_PlayerLogin))
 
+	//! 玩家创建角色
+	G_Dispatch.AddMsgRegistryToMap(new(Msg_CreateRole))
 }
 
 func (self *LoginMgr) Init(moduleMgr *ModuleMgr) {
