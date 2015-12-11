@@ -12,8 +12,8 @@ func main() {
 	loger.InitLoger("./log", loger.LogDebug, true, "test")
 	loger.Debug("Test Run")
 
-	TestLogin()
-	TestServerLst()
+	//TestLogin()
+	TestSendMsg()
 
 	//!TestLogin()   //! Done
 

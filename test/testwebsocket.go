@@ -38,7 +38,7 @@ func TestSendMsg() {
 	msg.Action = "playerlogin"
 	msg.CreateTime = time.Now().Unix()
 	msg.AccountID = 1
-	msg.LoginKey = "110"
+	msg.LoginKey = "566a3412aeddbf1eb837574e"
 
 	b, _ := json.Marshal(msg)
 
