@@ -4,13 +4,14 @@ import (
 	"gameserver/playermgr"
 )
 
+var loginMgr *LoginMgr
+
 type LoginMgr struct {
-	playerInfo PlayerMgr.PlayerInfo
 }
 
 func (self *LoginMgr) registerMsg() {
 	//! 玩家登录游戏服务器
-	PlayerMgr.G_Dispatch.AddMsgRegistryToMap(new(PlayerLogin))
+	PlayerMgr.G_Dispatch.AddMsgRegistryToMap(new(Msg_PlayerLogin))
 
 }
 
@@ -20,7 +21,7 @@ func (self *LoginMgr) Init() {
 }
 
 func NewLoginMgr() *LoginMgr {
-	mgr := new(LoginMgr)
-	mgr.Init()
-	return mgr
+	loginMgr = new(LoginMgr)
+	loginMgr.Init()
+	return loginMgr
 }

@@ -104,6 +104,17 @@ func (self *PlayerMgr) GetPlayerInfo(playerID int64) *PlayerInfo {
 	return self.playerInfoMap[playerID]
 }
 
+//! 加入一个玩家信息到数据库
+func (self *PlayerMgr) AddPlayerInfoToDB(info *PlayerInfo) bool {
+	isSuccess := db.Insert(table.GameDB, table.PlayerInfoTable, info)
+	if isSuccess == false {
+		return false
+	}
+
+	self.playerInfoMap[info.PlayerID] = info
+	return true
+}
+
 //! 通过账号ID取得一个玩家信息
 func (self *PlayerMgr) GetPlayerInfoFromAccount(accountID int64) *PlayerInfo {
 	var ret *PlayerInfo
