@@ -4,8 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"gameserver/modulemgr"
-	"gameserver/playermgr"
+	"gameserver/module"
 	"gopath/code.google.com/p/go.net/websocket"
 	"loger"
 	"loginserver/msg"
@@ -19,23 +18,23 @@ func Test() {
 }
 
 type GameServer struct {
-	serverID            int                    //! 游戏服务器ID
-	serverLimit         int                    //! 游戏服务器限制人数
-	addPlayerChannel    chan *PlayerMgr.Player //! 客户端登入通道
-	removePlayerChannel chan *PlayerMgr.Player //! 客户端登出通道
+	serverID            int                 //! 游戏服务器ID
+	serverLimit         int                 //! 游戏服务器限制人数
+	addPlayerChannel    chan *module.Player //! 客户端登入通道
+	removePlayerChannel chan *module.Player //! 客户端登出通道
 
-	moduleMgr *ModuleMgr.ModuleMgr //! 模块管理器
-	playerMgr *PlayerMgr.PlayerMgr //! 玩家管理器
+	moduleMgr *module.ModuleMgr //! 模块管理器
+	playerMgr *module.PlayerMgr //! 玩家管理器
 }
 
 //! 初始化服务器
 func (self *GameServer) Init(serverID int, limit int) {
 	self.serverID = serverID
 	self.serverLimit = limit
-	self.addPlayerChannel = make(chan *PlayerMgr.Player)
-	self.removePlayerChannel = make(chan *PlayerMgr.Player)
-	self.playerMgr = PlayerMgr.NewPlayerMgr(self.serverLimit)
-	self.moduleMgr = ModuleMgr.NewModuleMgr()
+	self.addPlayerChannel = make(chan *module.Player)
+	self.removePlayerChannel = make(chan *module.Player)
+	self.playerMgr = module.NewPlayerMgr(self.serverLimit)
+	self.moduleMgr = module.NewModuleMgr(self.playerMgr)
 
 	//! 注册游戏服务器
 	go self.LoopHeart()
@@ -85,7 +84,7 @@ func (self *GameServer) GetConnectHandler() websocket.Handler {
 	connectHandler := func(ws *websocket.Conn) {
 
 		//! 创建一个新玩家
-		player := PlayerMgr.NewPlayer(ws, self.playerMgr)
+		player := module.NewPlayer(ws, self.playerMgr)
 		player.PlayerID = self.playerMgr.CreateNewPlayerID()
 
 		//! 通知频道
