@@ -12,7 +12,7 @@ import (
 
 func main() {
 	//! 初始化日志管理器
-	loger.InitLoger("./log", loger.LogDebug, true, "test")
+	loger.InitLoger("./log", loger.LogDebug, true, "gameserver")
 
 	//! 初始化服务器配置
 	serverconfig.Init()
