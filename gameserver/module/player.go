@@ -3,6 +3,7 @@ package module
 import (
 	"encoding/json"
 	"gopath/code.google.com/p/go.net/websocket"
+	"io"
 	"loger"
 	"net"
 	"time"
@@ -59,6 +60,12 @@ func (self *Player) RecvMsg() {
 		if ok == true && neterr.Timeout() == true {
 			time.Sleep(1)
 			continue
+		}
+
+		if err == io.EOF {
+			//！ 玩家登出
+			loger.Info("Player logout. PlayerID: %v", self.PlayerID)
+			break
 		}
 
 		//! 其他错误断开连接

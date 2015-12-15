@@ -85,7 +85,6 @@ func (self *Msg_PlayerLogin) checkAction(player *Player, msg *PlayerLogin_Res) b
 }
 
 func (self *Msg_PlayerLogin) payAction(player *Player, msg *PlayerLogin_Res) bool {
-
 	return true
 }
 
@@ -101,7 +100,6 @@ func (self *Msg_PlayerLogin) doAction(player *Player, msg *PlayerLogin_Res) bool
 		return true
 	}
 
-	msg.StatusCode = code.RE_SUCCESS
 	msg.PlayerInfo = *info
 	return true
 }
@@ -124,6 +122,7 @@ func (self *Msg_PlayerLogin) ProcessAction(player *Player) bool {
 		return false
 	}
 
+	msg.StatusCode = code.RE_SUCCESS
 	return true
 }
 
@@ -231,9 +230,8 @@ func (self *Msg_CreateRole) doAction(player *Player, msg *CreateRole_Res) bool {
 
 	//! 数据库添加一条记录
 	playerMgr := player.PlayerMgr
-
 	playerMgr.AddPlayerInfoToDB(info)
-	msg.StatusCode = code.RE_SUCCESS
+
 	return true
 }
 
@@ -253,5 +251,6 @@ func (self *Msg_CreateRole) ProcessAction(player *Player) bool {
 	if self.doAction(player, msg) == false {
 		return false
 	}
+	msg.StatusCode = code.RE_SUCCESS
 	return true
 }

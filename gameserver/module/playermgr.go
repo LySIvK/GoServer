@@ -116,6 +116,15 @@ func (self *PlayerMgr) GetPlayerInfo(playerID int64) *PlayerInfo {
 	return self.playerInfoMap[playerID]
 }
 
+//! 获取一个玩家套接字信息
+func (self *PlayerMgr) GetPlayerSocket(playerID int64) *Player {
+	s, ok := self.playerMap[playerID]
+	if ok == false {
+		return nil
+	}
+	return s
+}
+
 //! 加入一个玩家信息到数据库
 func (self *PlayerMgr) AddPlayerInfoToDB(info *PlayerInfo) bool {
 	isSuccess := db.Insert(table.GameDB, table.PlayerInfoTable, info)
