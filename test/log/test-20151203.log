@@ -1,0 +1,69 @@
+17:02:06.592579 mongodb.go:93: [Error]Find error: not found 
+dbName: TestDB 
+table: TestTable 
+find: money:>9999999 
+17:19:41.421912 mongodb.go:120: [Error]Find_Conditional error: conditional wrong 
+dbName: TestDB 
+table: TestTable 
+find: money:9999999 > 
+17:22:44.853403 mongodb.go:120: [Error]Find_Conditional error: conditional wrong 
+dbName: TestDB 
+table: TestTable 
+find: money:9999999 > 
+17:24:12.747431 mongodb.go:120: [Error]Find_Conditional error: conditional wrong 
+dbName: TestDB 
+table: TestTable 
+find: money:9999999 > 
+17:24:53.668771 mongodb.go:106: [Debug]conditional: 9999999
+17:24:53.668771 mongodb.go:121: [Error]Find_Conditional error: conditional wrong 
+dbName: TestDB 
+table: TestTable 
+find: money:9999999 > 
+17:26:22.364844 mongodb.go:106: [Debug]conditional: >
+17:26:22.364844 mongodb.go:127: [Debug]map[money:map[$gt:9999999]]
+17:26:22.365844 mongodb.go:131: [Error]Find_Conditional error: not found 
+dbName: TestDB 
+table: TestTable 
+find: money:> 9999999 
+17:31:52.671737 mongodb.go:106: [Debug]conditional: >
+17:31:52.671737 mongodb.go:127: [Debug]map[money:map[$gt:999]]
+17:31:52.671737 mongodb.go:131: [Error]Find_Conditional error: not found 
+dbName: TestDB 
+table: TestTable 
+find: money:> 999 
+17:42:15.269347 mongodb.go:106: [Debug]conditional: >
+17:42:15.269347 mongodb.go:127: [Debug]map[money:map[$gt:999]]
+17:42:15.269347 mongodb.go:131: [Error]Find_Conditional error: Unmarshal can't deal with struct values. Use a pointer. 
+dbName: TestDB 
+table: TestTable 
+find: money:>999 
+17:42:24.814893 mongodb.go:106: [Debug]conditional: >
+17:42:24.814893 mongodb.go:127: [Debug]map[money:map[$gt:999]]
+17:42:24.815893 mongodb.go:131: [Error]Find_Conditional error: Unmarshal can't deal with struct values. Use a pointer. 
+dbName: TestDB 
+table: TestTable 
+find: money:>999 
+17:53:17.952251 mongodb.go:106: [Debug]conditional: >
+17:53:17.952251 mongodb.go:127: [Debug]map[money:map[$gt:999]]
+17:53:17.952251 mongodb.go:131: [Error]Find_Conditional error: Unmarshal can't deal with struct values. Use a pointer. 
+dbName: TestDB 
+table: TestTable 
+find: money:>999 
+17:53:55.563402 mongodb.go:106: [Debug]conditional: >
+17:53:55.563402 mongodb.go:127: [Debug]map[money:map[$gt:999]]
+17:53:55.563402 mongodb.go:131: [Error]Find_Conditional error: Unmarshal can't deal with struct values. Use a pointer. 
+dbName: TestDB 
+table: TestTable 
+find: money:>999 
+17:58:54.810518 mongodb.go:106: [Debug]conditional: >
+17:58:54.810518 mongodb.go:127: [Debug]map[money:map[$gt:999]]
+17:58:54.811518 mongodb.go:131: [Error]Find_Conditional error: Unmarshal can't deal with struct values. Use a pointer. 
+dbName: TestDB 
+table: TestTable 
+find: money:>999 
+17:59:56.352038 mongodb.go:106: [Debug]conditional: >
+17:59:56.353038 mongodb.go:127: [Debug]map[money:map[$gt:999]]
+18:03:12.040231 mongodb.go:131: [Error]Find_Conditional error: Can't canonicalize query: BadValue unknown operator: $e 
+dbName: TestDB 
+table: TestTable 
+find: money:=999999999 

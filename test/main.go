@@ -7,13 +7,35 @@ import (
 	//"loginserver/accountmgr"
 )
 
+type TestData struct {
+	ID    int
+	Name  string
+	Level int
+	Money int
+}
+
+func (self *TestData) GetPathName() string {
+	return "test.csv"
+}
+
+func (self *TestData) GetName() string {
+	return "test"
+}
+
 func main() {
 	//! 初始化loger
 	loger.InitLoger("./log", loger.LogDebug, true, "test")
 	loger.Debug("Test Run")
 
+	test := new(TestData)
+	mgr := new(StaticDataMgr)
+	mgr.Init()
+	mgr.Add(test)
+	mgr.Parse()
+
+	//!TestParseCsv()
 	//TestLogin()
-	TestCreateRole()
+	//TestCreateRole()
 	//TestSendMsg()
 
 	//!TestLogin()   //! Done

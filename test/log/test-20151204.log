@@ -1,0 +1,19 @@
+11:31:21.799325 configoperation.go:59: [Error]Unmarshal config file fail. Error: unexpected end of JSON input
+11:33:20.102091 configoperation.go:63: [Debug]Load config success: 
+ {127.0.0.1 27017 127.0.0.1 9016}
+11:34:48.453145 configoperation.go:59: [Error]Unmarshal config file fail. Error: unexpected end of JSON input
+11:35:05.737133 configoperation.go:63: [Debug]Load config success: 
+ {127.0.0.1 27017 127.0.0.1 9016}
+11:35:15.076667 configoperation.go:59: [Error]Unmarshal config file fail. Error: unexpected end of JSON input
+11:35:17.221790 configoperation.go:63: [Debug]Load config success: 
+ {127.0.0.1 27017 127.0.0.1 9016}
+11:37:04.481925 configoperation.go:59: [Error]Unmarshal config file fail. Error: unexpected end of JSON input
+11:38:16.251030 configoperation.go:60: [Error]Unmarshal config file fail. Error: unexpected end of JSON input
+11:44:31.127472 configoperation.go:61: [Debug]Load config success: 
+ {127.0.0.1 27017 127.0.0.1 9016}
+15:54:48.212400 configoperation.go:61: [Debug]Load config success: 
+ {127.0.0.1 27017 127.0.0.1 9016 1}
+15:54:48.212400 main.go:13: [Debug]LoginServer ip: 1
+15:55:32.679943 configoperation.go:61: [Debug]Load config success: 
+ {127.0.0.1 27017 127.0.0.1 9016 1}
+15:55:32.679943 main.go:13: [Debug]LoginServer ip: 1
