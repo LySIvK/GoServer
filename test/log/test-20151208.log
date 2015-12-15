@@ -1,6 +1,0 @@
-11:58:05.961543 main.go:13: [Debug]Test Run
-11:58:05.962543 mongodb.go:111: [Error]Find error: not found 
-dbName: accountdb 
-table: account 
-find: _id:1 
-12:06:27.054204 main.go:13: [Debug]Test Run

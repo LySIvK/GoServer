@@ -1,5 +1,0 @@
-09:48:50.911816 main.go:28: [Debug]Test Run
-09:48:50.911816 testcsv.go:72: [Info]&{1 阿三 1 2}
-09:48:50.911816 testcsv.go:72: [Info]&{2 阿四 2 4}
-09:48:50.911816 testcsv.go:72: [Info]&{3 阿五 3 6}
-09:48:50.911816 testcsv.go:72: [Info]&{4 Boss 99 9999}
