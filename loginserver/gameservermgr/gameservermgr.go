@@ -46,8 +46,6 @@ func (self *GameServerMgr) Inspect() {
 	inspectTime := time.Tick(30 * time.Second)
 	for {
 		curTime := time.Now().Unix()
-		self.lock.RLock()
-
 		for _, info := range self.serverMap {
 			if curTime-info.UpdateTime > 30 {
 				//! 30秒未有心跳包则判定服务器断线
@@ -59,7 +57,6 @@ func (self *GameServerMgr) Inspect() {
 			}
 		}
 
-		self.lock.RUnlock()
 		<-inspectTime
 	}
 }

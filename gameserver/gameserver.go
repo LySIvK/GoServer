@@ -2,10 +2,10 @@ package main
 
 import (
 	"bytes"
+	"code.google.com/p/go.net/websocket"
 	"encoding/json"
 	"fmt"
 	"gameserver/module"
-	"gopath/code.google.com/p/go.net/websocket"
 	"loger"
 	"loginserver/msg"
 	"net/http"

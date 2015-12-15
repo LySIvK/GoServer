@@ -1,8 +1,8 @@
 package module
 
 import (
+	"code.google.com/p/go.net/websocket"
 	"encoding/json"
-	"gopath/code.google.com/p/go.net/websocket"
 	"io"
 	"loger"
 	"net"

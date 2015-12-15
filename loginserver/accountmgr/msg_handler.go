@@ -159,6 +159,7 @@ func (self *AccountMgr) Handler_UserRegister(w http.ResponseWriter, r *http.Requ
 	//! 注册帐号
 	newInfo := self.CreateNewAccountInfo(req.AccountName, req.AccountPwd, 0)
 	self.AddAccountInfo(newInfo)
+
 	isSuccess := db.Insert(table.AccountDB, table.AccountInfoTable, newInfo)
 	if isSuccess == true {
 		response.StatusCode = msg.RE_SUCCESS
@@ -185,7 +186,6 @@ func (self *AccountMgr) Handler_UserRegister_Check(accountName string, accountPw
 	bCheck := self.IsNameExist(accountName)
 	if bCheck == true {
 		loger.Error("Account name already exists. AccountName: %s", accountName)
-
 		return false, msg.RE_ACCOUNT_EXIST
 	}
 

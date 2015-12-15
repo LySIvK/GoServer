@@ -1,9 +1,9 @@
 package main
 
 import (
+	"code.google.com/p/go.net/websocket"
 	"encoding/json"
 	"fmt"
-	"gopath/code.google.com/p/go.net/websocket"
 	"time"
 )
 

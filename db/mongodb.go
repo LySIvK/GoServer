@@ -2,8 +2,8 @@ package db
 
 import (
 	"errors"
-	"gopath/gopkg.in/mgo.v2/bson"
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 	"loger"
 )
 
@@ -108,7 +108,7 @@ func Find(dbName string, tableName string, find string, find_value interface{}, 
 	err := collection.Find(bson.M{find: find_value}).One(data)
 	if err != nil {
 		if err == mgo.ErrNotFound {
-			loger.Warn("Not Find")
+			loger.Warn("Not Find \r\ndbName: %s \r\ntable: %s \r\nfind: %s:%v \r\n", dbName, tableName, find, find_value)
 			return false
 		}
 

@@ -8,10 +8,10 @@ import (
 )
 
 var (
-	regurl       = "http://192.168.1.106:9016/register"
-	loginurl     = "http://192.168.1.106:9016/login"
-	verifyurl    = "http://192.168.1.106:9016/verifyuserlogin"
-	serverlsturl = "http://192.168.1.106:9016/serverlist"
+	regurl       = "http://192.168.1.113:9016/register"
+	loginurl     = "http://192.168.1.113:9016/login"
+	verifyurl    = "http://192.168.1.113:9016/verifyuserlogin"
+	serverlsturl = "http://192.168.1.113:9016/serverlist"
 )
 
 func TestRegister() {
@@ -27,7 +27,7 @@ func TestRegister() {
 	}
 
 	var req Msg_UserRegister_Req
-	req.AccountName = "test001"
+	req.AccountName = "test002"
 	req.AccountPwd = "000000"
 
 	b, _ := json.Marshal(&req)

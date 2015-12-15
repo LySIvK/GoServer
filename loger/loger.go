@@ -2,7 +2,7 @@ package loger
 
 import (
 	"fmt"
-	"gopath/github.com/issue9/term/colors"
+	"github.com/issue9/term/colors"
 	"log"
 	"os"
 	"sync"

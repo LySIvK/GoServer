@@ -92,17 +92,15 @@ func (self *AccountMgr) GetAccountInfoFromName(name string) *AccountInfo {
 
 //! 检测名字是否重复
 func (self *AccountMgr) IsNameExist(name string) bool {
-	//! 设置读锁
-	self.lock.RLock()
-	defer self.lock.RUnlock()
-
 	playerID := self.accountNameMap[name]
 	if playerID == 0 {
 		//! 内存中没有,去数据库中查找
+		self.lock.RLock()
 		info := AccountInfo{}
 		isFind := db.Find(table.AccountDB, table.AccountInfoTable, "name", name, &info)
+		self.lock.RUnlock()
 		if isFind != false {
-			return false
+			return true
 		}
 
 		//! 找到后加入缓存
@@ -112,7 +110,7 @@ func (self *AccountMgr) IsNameExist(name string) bool {
 		self.lock.Unlock()
 	}
 
-	return true
+	return false
 }
 
 //! 获取注册帐号ID

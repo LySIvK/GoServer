@@ -1,12 +1,14 @@
 package main
 
 import (
+	"github.com/zenazn/goji"
+	"github.com/zenazn/goji/bind"
 	account "loginserver/accountmgr"
 	game "loginserver/gameservermgr"
 	"net/http"
 	"serverconfig"
 	"strconv"
-	"tool"
+	//"tool"
 )
 
 //! 登录服务器
@@ -31,24 +33,35 @@ func (self *LoginServer) Test(w http.ResponseWriter, r *http.Request) {
 
 func (self *LoginServer) RegHttpMsgHandler() {
 	//! 测试
-	http.HandleFunc("/", self.Test)
+	goji.Get("/", self.Test)
+	//! http.HandleFunc("/", self.Test)
 
 	//! 玩家登陆
-	http.HandleFunc("/login", self.accountMgr.Handler_UserLogin)
+	goji.Post("/login", self.accountMgr.Handler_UserLogin)
+	//! http.HandleFunc("/login", self.accountMgr.Handler_UserLogin)
 
 	//! 玩家注册
-	http.HandleFunc("/register", self.accountMgr.Handler_UserRegister)
+	goji.Post("/register", self.accountMgr.Handler_UserRegister)
+	//! http.HandleFunc("/register", self.accountMgr.Handler_UserRegister)
 
 	//! 玩家请求服务器列表
-	http.HandleFunc("/serverlist", self.accountMgr.Handler_ServerList)
+	goji.Post("/serverlist", self.accountMgr.Handler_ServerList)
+	//! http.HandleFunc("/serverlist", self.accountMgr.Handler_ServerList)
 
 	//! 验证登录
-	http.HandleFunc("/verifyuserlogin", self.accountMgr.Handler_VerifyUserLogin)
+	goji.Post("/verifyuserlogin", self.accountMgr.Handler_VerifyUserLogin)
+	//! http.HandleFunc("/verifyuserlogin", self.accountMgr.Handler_VerifyUserLogin)
 
 	//! 注册服务器
-	http.HandleFunc("/reggameserver", self.gameServerMgr.Handler_RegisterGameSvr)
+	goji.Post("/reggameserver", self.gameServerMgr.Handler_RegisterGameSvr)
+	//! http.HandleFunc("/reggameserver", self.gameServerMgr.Handler_RegisterGameSvr)
 }
 
 func (self *LoginServer) StartServer() {
-	tool.HttpLimitListen(":"+strconv.Itoa(serverconfig.G_Config.LoginServer_Port), serverconfig.G_Config.LoginServerLimit)
+	//! 使用Goji框架
+	listener := bind.Socket(":" + strconv.Itoa(serverconfig.G_Config.LoginServer_Port))
+	goji.ServeListener(listener)
+
+	//! 使用原生库HTTP框架
+	//tool.HttpLimitListen(":"+strconv.Itoa(serverconfig.G_Config.LoginServer_Port), serverconfig.G_Config.LoginServerLimit)
 }

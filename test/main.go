@@ -27,11 +27,12 @@ func main() {
 	loger.InitLoger("./log", loger.LogDebug, true, "test")
 	loger.Debug("Test Run")
 
-	test := new(TestData)
-	mgr := new(StaticDataMgr)
-	mgr.Init()
-	mgr.Add(test)
-	mgr.Parse()
+	TestRegister()
+	// test := new(TestData)
+	// mgr := new(StaticDataMgr)
+	// mgr.Init()
+	// mgr.Add(test)
+	// mgr.Parse()
 
 	//!TestParseCsv()
 	//TestLogin()
